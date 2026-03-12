@@ -1,0 +1,69 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.mainContainer :global(.ant-form) {
+    width: 100%;
+}
+
+.divRegister {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 32px 16px 32px;
+}
+
+.btnRegister {
+    display: flex;
+    background-color: #1880e2;
+    color: white;
+    align-self: flex-end;
+    justify-self: end;
+
+
+}
+
+.divList {
+    width: 90%;
+    background-color: white;
+    border-radius: 6px;
+    margin: 0 32px 32px 32px;
+}
+
+.divActions {
+    display: flex;
+    gap: 12px;
+}
+
+.buttonAdd {
+    display: flex;
+    gap: 4px;
+    background-color: #1563ac;
+    color: white;
+    font-weight: 400;
+}
+
+.buttonAdd:hover {
+    background-color: #1563aca8 !important;
+    color: rgb(192, 192, 192) !important;
+}
+
+.titleSection {
+    font-size: 42px !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+
+.table {
+    background: #252525 !important;
+}
+
+.modalRegister {
+    border-radius: 6px;
+}

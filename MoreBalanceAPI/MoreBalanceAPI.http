@@ -1,0 +1,6 @@
+@MoreBalanceAPI_HostAddress = http://localhost:5101
+
+GET {{MoreBalanceAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

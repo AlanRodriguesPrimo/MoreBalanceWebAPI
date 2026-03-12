@@ -1,0 +1,42 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.mainContainer :global(.ant-form) {
+    width: 100%;
+}
+
+
+.divList {
+    width: 90%;
+    background-color: transparent;
+    border-radius: 6px;
+    margin-top: 16px;
+}
+
+
+.titleSection {
+    font-size: 42px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    align-self: center;
+    margin: 72px;
+}
+
+.table {
+    background: #252525 !important;
+}
+
+.modalRegister {
+    border-radius: 6px;
+}
+
+.tableSumaryRow td {
+    border-top: 3px double #000000;
+    font-weight: 600;
+}

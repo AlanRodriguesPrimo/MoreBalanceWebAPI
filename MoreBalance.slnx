@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="API/API.csproj" />
+  <Project Path="Application/Application.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+  <Project Path="MoreBalanceAPI/MoreBalanceAPI.csproj" Id="65ffc177-6297-44c9-9a13-33b94a0a442d" />
+</Solution>
