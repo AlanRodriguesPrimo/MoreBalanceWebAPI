@@ -1,5 +1,6 @@
 ﻿using Application.Commands;
 using Application.Commands.Contracts;
+using Application.Commands.Person;
 using Application.DTOs.Response;
 using Domain.Entities;
 using Domain.IRepositories.Contracts;
@@ -17,10 +18,12 @@ namespace Application.Handlers
     public class PersonHandler
     {
         private readonly IPersonRepository _personRepository;
+        private readonly ITransactionRepository _transactionsRepository;
 
-        public PersonHandler(IPersonRepository personRepository)
+        public PersonHandler(IPersonRepository personRepository, ITransactionRepository transactionsRepository)
         {
             _personRepository = personRepository;
+            _transactionsRepository = transactionsRepository;
         }
         public async Task<dynamic> Handle()
         {
@@ -84,12 +87,14 @@ namespace Application.Handlers
 
         }
 
-        public async Task<dynamic> Handle(DeletePersonCommand command)
+        public async Task<dynamic> Handle(DeleteCommand command)
         {
             try
             {
                 var person = await _personRepository.GetByIdAsync(command.Id);
+                var transactions = await _transactionsRepository.GetAllByParamsAsync(x=>x.PersonId == person.Id);
 
+                _transactionsRepository.DeleteObjectRange(transactions);
                 _personRepository.DeleteObject(person);
 
                 return (ICommandResult)CommandResult<string>.Sucess("Deletado com sucesso!", HttpStatusCode.OK);

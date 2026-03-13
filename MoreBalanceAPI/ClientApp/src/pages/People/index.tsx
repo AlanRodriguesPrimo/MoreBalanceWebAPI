@@ -2,34 +2,94 @@
 import { Button, ConfigProvider, Form, Input, InputNumber, Modal, Table, theme, Typography, type TableColumnsType, type TableColumnType } from 'antd';
 import styles from './styles.module.css';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { PeopleModel } from '../../Models/People';
-import axios from 'axios';
+import api from "../../api/api";
+import { ToastContainer, toast } from "react-toastify";
 
 export const People = () => {
-    const [form] = Form.useForm();
+    const [createForm] = Form.useForm();
+    const [editForm] = Form.useForm();
     const [isModalCreate, setIsModalCreate] = useState(false);
     const [isModalEdit, setIsModalEdit] = useState(false);
     const [isModalDelete, setIsModalDelete] = useState(false);
-    const [recordPersonId, setRecordPersonId] = useState("");
+    const [recordPerson, setRecordPerson] = useState<PeopleModel>();
+    const [dataSource, setDataSource] = useState<PeopleModel[]>([]);
 
-    async function EditPerson() {
-
-    }
-    async function DeletePerson() {
-
-    }
-
-    const onFinish = async (values: any) => {
+    async function EditPerson(values: any) {
         try {
-            const response = await axios.post("api/person", values);
+            debugger;
+            const resp = await api.put("api/person", values);
+            if (resp.status == 200) {
+                toast.success("Atualização realizada com sucesso!");
+                editForm.resetFields();
+                setIsModalEdit(false);
+                fetchInitialData();
+            } else {
+                toast.error("Houve um erro ao cadastrar!")
+            }
         } catch (error) {
-            console.error("Erro ao cadastrar", error)
+            toast.error("Erro interno ao atualizar!")
         }
 
+    }
 
+    async function DeletePerson() {
+        try {
+            if (recordPerson?.id != null) {
+                debugger;
+                const resp = await api.delete(`api/person/${recordPerson?.id}`);
+                if (resp.status == 200) {
+                    toast.success("Deleção realizada com sucesso")
+                    setIsModalDelete(false);
+                    fetchInitialData();
+                } else {
+                    toast.error("Erro ao deletar item!")
+                }
+            } else {
+                toast.info("Item para deleção não definido!");
+            }
+        } catch {
+            toast.error("Erro interno ao deletar!")
+        }
+    }
+    const fetchInitialData = async () => {
+        try {
+            debugger;
+            var resp = await api.get("api/person");
+            setDataSource(resp.data);
+
+        } catch (error) {
+            toast.error("Erro interno ao buscar dados!")
+        }
+    }
+    const onFinish = async (values: any) => {
+        try {
+            debugger;
+            const resp = await api.post("api/person", values);
+            if (resp.status == 200) {
+                toast.success("Pessoa cadastrada com sucesso!");
+                createForm.resetFields();
+                setIsModalCreate(false);
+                fetchInitialData();
+            } else {
+                toast.error("Houve um erro ao cadastrar!")
+            }
+        } catch (error) {
+            toast.error("Erro interno ao cadastrar!")
+        }
 
     }
+
+
+    useEffect(() => {
+        editForm.setFieldsValue({ id: recordPerson?.id, age: recordPerson?.age, name: recordPerson?.name });
+    }, [recordPerson])
+
+    useEffect(() => {
+        fetchInitialData();
+    }, [])
+
 
     const columns: TableColumnsType<PeopleModel> = [
         {
@@ -52,22 +112,16 @@ export const People = () => {
                 <div className={styles.divActions}>
                     <EditOutlined style={{ color: '#096dd9' }} onClick={() => {
                         setIsModalEdit(true);
-                        setRecordPersonId(record.PersonId);
+                        setRecordPerson(record);
                     }} />
                     <DeleteOutlined style={{ color: '#ff4d4f' }} onClick={() => {
                         setIsModalDelete(true);
-                        setRecordPersonId(record.PersonId);
+                        setRecordPerson(record);
                     }} />
                 </div>
             ),
         },
     ];
-
-    const dataSource = Array.from({ length: 30 }).map<PeopleModel>((_, i) => ({
-        PersonId: "" + i,
-        name: `Nome ${i}`,
-        age: 12 + i
-    }));
 
     return (
         <ConfigProvider
@@ -117,7 +171,7 @@ export const People = () => {
                     className={styles.modalRegister}>
 
 
-                    <Form onFinish={onFinish} form={form} layout='vertical' validateTrigger='onSubmit' >
+                    <Form onFinish={onFinish} form={createForm} layout='vertical' validateTrigger='onSubmit' >
                         <Form.Item label="Nome" name="name" rules={[{ required: true, message: 'campo obrigatório', type: 'string', max: 200 }]}>
                             <Input style={{ width: '100%' }} type='text' placeholder='Digite o seu nome' />
                         </Form.Item>
@@ -140,8 +194,11 @@ export const People = () => {
                     className={styles.modalRegister}>
 
 
-                    <Form form={form} layout='vertical' validateTrigger='onSubmit' >
-                        <Form.Item label="Nome" name="name" rules={[{ required: true, message: 'campo obrigatório', type: 'string', max: 200 }]}>
+                    <Form form={editForm} onFinish={EditPerson} layout='vertical' validateTrigger='onSubmit' >
+                        <Form.Item name="id" hidden>
+                            <Input type="hidden" />
+                        </Form.Item>
+                        <Form.Item label="Nome" name="name" rules={[{ required: true, message: 'campo obrigatório', type: 'string', max: 200 }]} >
                             <Input style={{ width: '100%' }} type='text' placeholder='Digite o seu nome' />
                         </Form.Item>
 

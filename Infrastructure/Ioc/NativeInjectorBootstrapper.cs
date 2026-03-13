@@ -15,10 +15,18 @@ namespace Infrastructure.Ioc
         {
         var sqlConnection = configuration.GetConnectionString("DefaultConnection");
 
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(sqlConnection));
+            services.AddDbContext<ApplicationDbContext>(options =>
+       options.UseSqlServer(
+           sqlConnection,
+           sqlOptions => sqlOptions.EnableRetryOnFailure(
+               maxRetryCount: 5,
+               maxRetryDelay: TimeSpan.FromSeconds(30),
+               errorNumbersToAdd: null
+           )
+       )
+   );
 
-            services.AddSingleton<IDbConnection>(provider =>
+            services.AddScoped<IDbConnection>(provider =>
             {
                 var connection = new SqlConnection(sqlConnection);
                 connection.Open();
@@ -32,6 +40,9 @@ namespace Infrastructure.Ioc
 
             //handlers
             services.AddScoped<PersonHandler>();
+            services.AddScoped<CategoryHandler>();
+            services.AddScoped<TransactionHandler>();
+            services.AddScoped<GeneralSummaryHandler>();
         }
     }
 }

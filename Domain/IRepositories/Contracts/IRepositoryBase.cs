@@ -19,5 +19,6 @@ namespace Domain.IRepositories.Contracts
 
         void DeleteObject(T entity);
         void SaveChanges();
+        void DeleteObjectRange(List<T> entityList);
     }
 }

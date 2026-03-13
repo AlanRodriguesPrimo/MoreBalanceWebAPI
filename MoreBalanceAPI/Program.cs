@@ -7,7 +7,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSwaggerAndFront", policy =>
     {
-        policy.WithOrigins("https://localhost:7165", "http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

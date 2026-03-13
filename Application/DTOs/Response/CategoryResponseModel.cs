@@ -12,5 +12,12 @@ namespace Application.DTOs.Response
         public Guid Id { get; set; }
         public string Description { get; set; }
         public CategoryPurpose Purpose { get; set; }
+
+        public CategoryResponseModel(Guid id, string descrition, CategoryPurpose purpose)
+        {
+            Id = id;
+            Description = descrition;
+            Purpose = purpose;
+        }
     }
 }

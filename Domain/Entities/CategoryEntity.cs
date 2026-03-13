@@ -12,6 +12,13 @@ namespace Domain.Entities
     {
         public string Description { get; set; } 
         public CategoryPurpose Purpose { get; set; }
+
+
+        public CategoryEntity(string description,CategoryPurpose purpose) 
+        {
+            Description = description;
+                Purpose = purpose;
+        }
         public virtual ICollection<TransactionEntity> Transactions { get; set; }
     }
 }

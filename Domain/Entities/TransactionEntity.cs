@@ -17,5 +17,15 @@ namespace Domain.Entities
         public Guid PersonId { get; set; }
         public virtual PersonEntity Person { get; set; }
         public virtual CategoryEntity Category { get; set; }
+
+        public TransactionEntity() { }
+        public TransactionEntity(string description, decimal value, TransactionPurpose type, Guid categoryId, Guid personId)
+        {
+            Description = description;
+            Value = value;
+            Type = type;
+            CategoryId = categoryId;
+            PersonId = personId;
+        }
     }
 }

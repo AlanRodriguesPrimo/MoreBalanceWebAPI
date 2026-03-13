@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Commands
 {
-    public class DeletePersonCommand
+    public class DeleteCommand
     {
         public Guid Id {  get; set; }
     }

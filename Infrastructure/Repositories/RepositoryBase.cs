@@ -74,7 +74,12 @@ namespace Infrastructure.Repositories
         }
 
 
-
+        public void DeleteObjectRange(List<T> entityList)
+        {
+            _context.RemoveRange(entityList);
+            if (_saveChanges)
+                _context.SaveChanges();
+        }
         void IRepositoryBase<T>.SaveChanges()
         {
             _context.SaveChanges();
