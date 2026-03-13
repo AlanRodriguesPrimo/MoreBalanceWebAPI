@@ -39,9 +39,9 @@ export const Categorys = () => {
 
     async function DeleteCategory() {
         try {
-            if (recordCategory?.Id != null) {
+            if (recordCategory?.id != null) {
                 debugger;
-                const resp = await api.delete(`api/category/${recordCategory?.Id}`);
+                const resp = await api.delete(`api/category/${recordCategory?.id}`);
                 if (resp.status == 200) {
                     toast.success("Deleção realizada com sucesso")
                     setIsModalDelete(false);
@@ -60,7 +60,9 @@ export const Categorys = () => {
         try {
             debugger;
             var resp = await api.get("api/category");
-            setDataSource(resp.data);
+            if (resp.status == 200) {
+                setDataSource(resp.data);
+            }
 
         } catch (error) {
             toast.error("Erro interno ao buscar dados!")
@@ -86,7 +88,7 @@ export const Categorys = () => {
 
 
     useEffect(() => {
-        editForm.setFieldsValue({ id: recordCategory?.Id, age: recordCategory?.Description, name: recordCategory?.Purpose });
+        editForm.setFieldsValue({ id: recordCategory?.id, description: recordCategory?.description, purpose: recordCategory?.purpose });
     }, [recordCategory])
 
     useEffect(() => {
@@ -101,18 +103,18 @@ export const Categorys = () => {
     const columns: TableColumnsType<CategoryModel> = [
         {
             title: 'Descrição',
-            dataIndex: 'Description',
+            dataIndex: 'description',
             key: 'description',
             width: '40%'
         },
         {
             title: 'Finalidade',
-            dataIndex: 'Purpose',
+            dataIndex: 'purpose',
             key: 'purpose',
             width: '40%',
             render: (_, record) => {
                 return (
-                    <Typography.Text>{purposeLabel[record.Purpose]}</Typography.Text>
+                    <Typography.Text>{purposeLabel[record.purpose]}</Typography.Text>
                 )
             }
         },
@@ -183,7 +185,7 @@ export const Categorys = () => {
                     className={styles.modalRegister}>
 
 
-                    <Form form={createForm} layout='vertical' validateTrigger='onSubmit' >
+                    <Form form={createForm} onFinish={onFinish} layout='vertical' validateTrigger='onSubmit' >
                         <Form.Item label="Descrição" name="description" rules={[{ required: true, message: 'campo obrigatório', type: 'string', max: 400 }]}>
                             <Input style={{ width: '100%' }} type='text' placeholder='Digite o nome da categoria' />
                         </Form.Item>
@@ -213,7 +215,7 @@ export const Categorys = () => {
                     className={styles.modalRegister}>
 
 
-                    <Form form={editForm} layout='vertical' validateTrigger='onSubmit' >
+                    <Form form={editForm} onFinish={EditCategory} layout='vertical' validateTrigger='onSubmit' >
                         <Form.Item name="id" hidden>
                             <Input type="hidden" />
                         </Form.Item>

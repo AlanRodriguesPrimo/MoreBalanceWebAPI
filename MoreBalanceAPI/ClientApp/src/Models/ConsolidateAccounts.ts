@@ -1,12 +1,12 @@
 export interface ConsolidatedPeople {
-    person: string,
+    name: string,
     totalRevenues: number,
     totalExpenses: number;
     balance: number;
 }
 
 export interface ConsolidatedCategorys {
-    category: string,
+    description: string,
     totalRevenues: number,
     totalExpenses: number;
     balance: number;

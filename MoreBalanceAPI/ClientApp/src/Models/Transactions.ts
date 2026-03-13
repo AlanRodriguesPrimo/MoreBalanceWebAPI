@@ -1,8 +1,10 @@
 export interface TransactionsModel {
-    transactionId: string,
+    id: string,
     description: string,
     value: number,
     type: number,
-    category: string;
-    person: string;
+    categoryId: string;
+    personId: string;
+    categoryName: string;
+    personName: string;
 }
